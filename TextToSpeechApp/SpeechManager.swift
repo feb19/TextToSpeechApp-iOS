@@ -30,6 +30,21 @@ final class SpeechManager: NSObject, AVSpeechSynthesizerDelegate {
         }
     }
     
+    func clear() {
+        playing = false
+        texts.removeAll()
+        if speechSynthesizer.isSpeaking {
+            speechSynthesizer.stopSpeaking(at: .immediate)
+        }
+    }
+    
+    private func play(text: String) {
+        playing = true
+        let utterance = AVSpeechUtterance(string: text)
+        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
+        speechSynthesizer.speak(utterance)
+    }
+    
     // MARK: --
     // MARK: AVSpeechSynthesizerDelegate
     
@@ -46,21 +61,6 @@ final class SpeechManager: NSObject, AVSpeechSynthesizerDelegate {
             // finished
             playing = false
         }
-    }
-    
-    func clear() {
-        playing = false
-        texts.removeAll()
-        if speechSynthesizer.isSpeaking {
-            speechSynthesizer.stopSpeaking(at: .immediate)
-        }
-    }
-    
-    private func play(text: String) {
-        playing = true
-        let utterance = AVSpeechUtterance(string: text)
-        utterance.voice = AVSpeechSynthesisVoice(language: "ja-JP")
-        speechSynthesizer.speak(utterance)
     }
     
 }
